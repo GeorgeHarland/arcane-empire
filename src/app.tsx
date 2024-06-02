@@ -48,10 +48,6 @@ export function App() {
     return () => unsubscribe();
   }, []);
 
-  const sendGameStateToPhaser = (gameState: GameData) => {
-    eventEmitter.emit('update-phaser-data', gameState);
-  };
-
   const buyWizard = (elementType: ElementType): void => {
     eventEmitter.emit('buy-wizard', elementType);
   };

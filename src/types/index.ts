@@ -48,8 +48,15 @@ export type Empire = {
   rulerName: string;
   regionalStrength: number;
   playerReputation: number;
+  messageHistory: Message[];
   personality: EmpirePersonality;
   color: number;
+};
+
+export type Message = {
+  message: string;
+  sender: 'user' | 'empire';
+  timestamp: number;
 };
 
 export type Mission = {

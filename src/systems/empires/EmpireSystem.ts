@@ -75,9 +75,10 @@ export class EmpiresSystem {
           empireSettings.minStartSize,
           empireSettings.maxStartSize
         ),
-        playerReputation: 50,
+        playerReputation: 5,
         personality: this.getRandomPersonality(),
         color: empireColours[i],
+        messageHistory: [],
       };
 
       gameState.empires.push(empire);
