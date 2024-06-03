@@ -55,7 +55,7 @@ export type Empire = {
 
 export type Message = {
   message: string;
-  sender: 'user' | 'empire';
+  sender: 'user' | 'empire' | 'system';
   timestamp: number;
 };
 
@@ -96,10 +96,13 @@ export type Wizard = {
 };
 
 export type EmpirePersonality =
-  | 'aggressive'
+  | 'megalomaniacal'
+  | 'erratic'
   | 'passive'
   | 'friendly'
-  | 'selfish';
+  | 'greedy'
+  | 'selfish'
+  | 'reclusive';
 
 export type ElementType = 'fire' | 'water' | 'earth' | 'air';
 

@@ -18,8 +18,7 @@ export const sendMessageToKingdom = async (empire: Empire, message: string) => {
         method: 'POST',
         body: JSON.stringify({
           message: message,
-          personality: empire.personality,
-          playerReputation: empire.playerReputation,
+          empire: empire,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -35,8 +34,10 @@ export const sendMessageToKingdom = async (empire: Empire, message: string) => {
         'Error sending message to kingdom. Status: ',
         response.status
       );
+      return 'error';
     }
   } catch (error) {
     console.error('Error sending message to kingdom.');
+    return 'error';
   }
 };

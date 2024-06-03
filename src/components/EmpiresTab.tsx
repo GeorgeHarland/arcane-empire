@@ -162,6 +162,16 @@ const EmpireDialogue: React.FC<EmpireDialogueProps> = (props) => {
 
     const response = await sendMessageToKingdom(empire, inputValue);
 
+    if (response === 'error') {
+      empire.messageHistory.push({
+        message: 'The crow never returned. (server error)',
+        sender: 'system',
+        timestamp: Date.now(),
+      });
+      setMessageHistory([...empire.messageHistory]);
+      return;
+    }
+
     if (response) {
       empire.messageHistory.push({
         message: response.message.content,
@@ -169,6 +179,19 @@ const EmpireDialogue: React.FC<EmpireDialogueProps> = (props) => {
         timestamp: Date.now(),
       });
       setMessageHistory([...empire.messageHistory]);
+    }
+  };
+
+  const getMessageFormat = (sender: string) => {
+    switch (sender) {
+      case 'user':
+        return 'self-end bg-slate-200 text-gray-700';
+      case 'empire':
+        return 'self-start bg-indigo-200 text-gray-700';
+      case 'system':
+        return 'self-center bg-white text-red-500';
+      default:
+        return 'self-start bg-indigo-200 text-gray-700';
     }
   };
 
@@ -180,15 +203,9 @@ const EmpireDialogue: React.FC<EmpireDialogueProps> = (props) => {
           {empire.messageHistory.map((message, index) => (
             <div
               key={index}
-              className={`w-[80%] px-1 rounded-md  ${
-                message.sender === 'user'
-                  ? 'self-end bg-slate-200'
-                  : 'self-start bg-indigo-200'
-              }`}
+              className={`w-[80%] px-1 rounded-md  ${getMessageFormat(message.sender)}`}
             >
-              <p className="text-sm text-gray-700 text-pretty">
-                {message.message}
-              </p>
+              <p className="text-sm text-pretty">{message.message}</p>
             </div>
           ))}
           <div ref={messageEndRef} className="-mt-2"></div>
