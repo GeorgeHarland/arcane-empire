@@ -7,13 +7,7 @@ import {
   guildNames,
   waterWizardNames,
 } from '../../setup/wizardNames';
-import {
-  ElementType,
-  GameData,
-  Wizard,
-  WizardCollection,
-  WizardDispatchData,
-} from '../../types';
+import { ElementType, GameData, Wizard, WizardDispatchData } from '../../types';
 import { HexagonGrid } from '../hex_grid/HexagonGrid';
 import { StructureType } from '../world_generation/StructureRecords';
 import { Tile } from '../world_generation/Tile';
@@ -86,10 +80,11 @@ export class WizardManager {
       );
 
       let wizard: Wizard = {
-        name: name,
-        initials: initials,
+        name,
+        initials,
         level: 1,
         status: 'idle',
+        maxHealth: 100,
       };
 
       gameState.wizards.fire.push(wizard);
@@ -105,10 +100,11 @@ export class WizardManager {
       );
 
       let wizard: Wizard = {
-        name: name,
-        initials: initials,
+        name,
+        initials,
         level: 1,
         status: 'idle',
+        maxHealth: 100,
       };
 
       gameState.wizards.water.push(wizard);
@@ -124,10 +120,11 @@ export class WizardManager {
       );
 
       let wizard: Wizard = {
-        name: name,
-        initials: initials,
+        name,
+        initials,
         level: 1,
         status: 'idle',
+        maxHealth: 100,
       };
 
       gameState.wizards.earth.push(wizard);
@@ -143,10 +140,11 @@ export class WizardManager {
       );
 
       let wizard: Wizard = {
-        name: name,
-        initials: initials,
+        name,
+        initials,
         level: 1,
         status: 'idle',
+        maxHealth: 100,
       };
 
       gameState.wizards.air.push(wizard);
@@ -189,12 +187,12 @@ export class WizardManager {
   }
 
   public create(): void {
-    for (let i = 0; i < this.wizardsEntities.length; i++) {
-      this.wizardsEntities[i].spawnWizard();
+    for (const wizardEntity of this.wizardsEntities) {
+      wizardEntity.spawnWizard();
 
-      this.staticWizards.set(this.wizardsEntities[i], this.guildTowerTile);
+      this.staticWizards.set(wizardEntity, this.guildTowerTile);
 
-      this.wizardsEntities[i].setIdle();
+      wizardEntity.setIdle();
     }
   }
 
@@ -274,7 +272,7 @@ export class WizardManager {
   }
 
   public sendWizardToTile(targetWizard: WizardEntity, targetTile: Tile): void {
-    if (this.staticWizards.has(targetWizard) == false) return;
+    if (!this.staticWizards.has(targetWizard)) return;
 
     let currentTile = this.staticWizards.get(targetWizard);
 
@@ -312,10 +310,11 @@ export class WizardManager {
     );
 
     let newWizard: Wizard = {
-      name: name,
-      initials: initials,
+      name,
+      initials,
       level: 1,
       status: 'idle',
+      maxHealth: 100,
     };
 
     let newWizardEntity = new WizardEntity(
@@ -333,13 +332,9 @@ export class WizardManager {
     modifiedGameState.playerGold -=
       modifiedGameState.tower.baseWizardCost +
       modifiedGameState.tower.perExtraWizardCost *
-        (modifiedGameState.wizards[elementType as keyof WizardCollection]
-          .length -
-          1);
+        (modifiedGameState.wizards[elementType].length - 1);
 
-    modifiedGameState.wizards[elementType as keyof WizardCollection].push(
-      newWizard
-    );
+    modifiedGameState.wizards[elementType].push(newWizard);
 
     this.wizardsEntities.push(newWizardEntity);
 

@@ -1,4 +1,5 @@
 import { Wizard } from '../../types';
+import { HealthBar } from '../HealthBar';
 import { WizardManager } from './WizardManager';
 import { WizardGraphicData } from './WizardRecords';
 
@@ -6,10 +7,12 @@ export class WizardEntity {
   wizardManager: WizardManager;
 
   wizardData: Wizard;
+  healthBar: HealthBar;
 
   wizardGraphicData: WizardGraphicData;
 
-  image: Phaser.GameObjects.Image | undefined;
+  container: Phaser.GameObjects.Container | undefined;
+  primaryImage: Phaser.GameObjects.Image | undefined;
 
   constructor(
     wizardManager: WizardManager,
@@ -19,25 +22,32 @@ export class WizardEntity {
     this.wizardManager = wizardManager;
     this.wizardData = wizardData;
     this.wizardGraphicData = wizardGraphicData;
+
+    this.healthBar = new HealthBar(this.wizardData.maxHealth);
   }
 
-  public spawnWizard(): Phaser.GameObjects.Image {
-    this.image = this.wizardManager.scene.add.image(
+  public spawnWizard(): void {
+    this.container = this.wizardManager.scene.add.container(0, 0);
+
+    this.primaryImage = this.wizardManager.scene.add.image(
       0,
       0,
       this.wizardGraphicData.power + '_wizard'
     );
-    this.image.setScale(
+    this.primaryImage.setScale(
       this.wizardGraphicData.scale * this.wizardManager.hexGrid.hexScale
     );
-    return this.image;
+    this.container.add(this.primaryImage);
+    this.healthBar.spawn(this.container, this.primaryImage);
   }
 
   public getImage(): Phaser.GameObjects.Image {
-    if (this.image === undefined)
-      throw "Attempting to access wizard image before it's been created";
+    if (this.primaryImage === undefined)
+      throw new Error(
+        "Attempting to access wizard image before it's been created"
+      );
 
-    return this.image;
+    return this.primaryImage;
   }
 
   public setIdle(): void {
@@ -50,8 +60,6 @@ export class WizardEntity {
   }
 
   public flipSpriteTimerEvent(): void {
-    if (this.image === undefined) return;
-
-    this.image.toggleFlipX();
+    this.primaryImage?.toggleFlipX();
   }
 }
