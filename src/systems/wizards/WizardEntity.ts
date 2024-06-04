@@ -62,4 +62,8 @@ export class WizardEntity {
   public flipSpriteTimerEvent(): void {
     this.primaryImage?.toggleFlipX();
   }
+
+  public applyDamage(amount: number): void {
+    this.healthBar.applyOffset(-amount);
+  }
 }
