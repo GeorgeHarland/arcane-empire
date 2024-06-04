@@ -110,20 +110,20 @@ export class MovementAction {
       return;
     }
 
-    let wizardImage = this.wizard.getImage();
+    const wizardContainer = this.wizard.getContainer();
 
-    wizardImage.x = this.wizardPosition().x + this.hexGrid.getContainer().x;
-    wizardImage.y = this.wizardPosition().y + this.hexGrid.getContainer().y;
+    wizardContainer.x = this.wizardPosition().x + this.hexGrid.getContainer().x;
+    wizardContainer.y = this.wizardPosition().y + this.hexGrid.getContainer().y;
 
-    wizardImage.depth = wizardImage.y;
+    wizardContainer.depth = wizardContainer.y;
   }
 
   private wizardPosition(): Phaser.Math.Vector2 {
-    let journeyProgress = (this.progress / this.time) * this.path.length;
-    let legStartIndex = Math.floor(journeyProgress);
-    let legStart = this.path[legStartIndex];
-    let legEnd = this.path[legStartIndex + 1];
-    let legProgress = journeyProgress - legStartIndex;
+    const journeyProgress = (this.progress / this.time) * this.path.length;
+    const legStartIndex = Math.floor(journeyProgress);
+    const legStart = this.path[legStartIndex];
+    const legEnd = this.path[legStartIndex + 1];
+    const legProgress = journeyProgress - legStartIndex;
     if (legStartIndex + 1 >= this.path.length) {
       return legStart; // end doesn't exist after arrival, start is final position
     } else {

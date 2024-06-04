@@ -41,13 +41,13 @@ export class WizardEntity {
     this.healthBar.spawn(this.container, this.primaryImage);
   }
 
-  public getImage(): Phaser.GameObjects.Image {
-    if (this.primaryImage === undefined)
+  public getContainer(): Phaser.GameObjects.Container {
+    if (this.container === undefined)
       throw new Error(
         "Attempting to access wizard image before it's been created"
       );
 
-    return this.primaryImage;
+    return this.container;
   }
 
   public setIdle(): void {

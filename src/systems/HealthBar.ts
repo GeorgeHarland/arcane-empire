@@ -1,11 +1,11 @@
 import { findAndMap } from '../helpers/utils';
 
-const BAR_OFFSET = 10;
-const BAR_HEIGHT = 15;
+const BAR_OFFSET = 5;
+const BAR_HEIGHT = 3;
 const BAR_WIDTHS: { width: number; maxHealthThreshold: number }[] = [
-  { width: 100, maxHealthThreshold: 100 },
+  { width: 30, maxHealthThreshold: 100 },
 ];
-const MAX_BAR_WIDTH = 500;
+const MAX_BAR_WIDTH = 100;
 
 export class HealthBar {
   private maxHealth: number;
@@ -31,8 +31,8 @@ export class HealthBar {
 
     this.healthRect = new Phaser.GameObjects.Rectangle(
       container.scene,
-      barCenter.x - this.rectangleWidth / 2,
-      barCenter.y - BAR_HEIGHT - BAR_OFFSET,
+      barCenter.x,
+      barCenter.y - BAR_HEIGHT / 2 - BAR_OFFSET,
       this.rectangleWidth * (this.health / this.maxHealth),
       BAR_HEIGHT,
       0x00ff00
@@ -41,8 +41,8 @@ export class HealthBar {
     container.add([
       new Phaser.GameObjects.Rectangle(
         container.scene,
-        barCenter.x - this.rectangleWidth / 2,
-        barCenter.y - BAR_HEIGHT - BAR_OFFSET,
+        barCenter.x,
+        barCenter.y - BAR_HEIGHT / 2 - BAR_OFFSET,
         this.rectangleWidth,
         BAR_HEIGHT,
         0xff0000

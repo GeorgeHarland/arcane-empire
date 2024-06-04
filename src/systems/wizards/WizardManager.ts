@@ -206,12 +206,12 @@ export class WizardManager {
           index
         );
 
-        let wizardImage = wizard.getImage();
+        const wizardContainer = wizard.getContainer();
 
-        wizardImage.x = slotPosition.x + this.hexGrid.getContainer().x;
-        wizardImage.y = slotPosition.y + this.hexGrid.getContainer().y;
+        wizardContainer.x = slotPosition.x + this.hexGrid.getContainer().x;
+        wizardContainer.y = slotPosition.y + this.hexGrid.getContainer().y;
 
-        wizardImage.depth = wizardImage.y;
+        wizardContainer.depth = wizardContainer.y;
       });
     });
 

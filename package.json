@@ -28,7 +28,7 @@
     "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "autoprefixer": "^10.4.19",
-    "eslint": "^8.56.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-preact": "^0.1.0",
     "eslint-plugin-prettier": "^5.1.3",
