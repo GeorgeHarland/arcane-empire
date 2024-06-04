@@ -8,5 +8,6 @@ module.exports = {
       'error',
       { accessibility: 'explicit' },
     ],
+    '@typescript-eslint/no-explicit-any': 2,
   },
 };
