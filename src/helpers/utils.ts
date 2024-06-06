@@ -73,7 +73,7 @@ export function raise<T = never>(err: Error): T {
   throw err;
 }
 
-export type OmittedValues<
-  O extends {},
-  K extends string | symbol | number,
-> = Omit<O, K>[keyof Omit<O, K>];
+export type RemainingKeys<O extends object, T extends object> = Exclude<
+  keyof O,
+  keyof T
+>;
