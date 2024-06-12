@@ -10,6 +10,10 @@ import {
 } from '../setup/animationSetup';
 
 export default class InitialScene extends Phaser.Scene {
+  private loadingState = {
+    lambdaWarmedUp: false,
+  };
+
   public constructor() {
     super({ key: 'InitialScene' });
   }
@@ -50,8 +54,35 @@ export default class InitialScene extends Phaser.Scene {
     runner.setScale(1.5);
     runner.play('runningRogueAnimation');
 
-    this.time.delayedCall(3000, () => {
+    // skips the lambda warmup check if the API is disabled
+    if (import.meta.env.VITE_API_ENABLED !== 'true') {
+      this.loadingState.lambdaWarmedUp = true;
+    }
+
+    fetch(import.meta.env.VITE_AWS_API_URL + '/warmup')
+      .then((response) => {
+        if (response.ok) {
+          this.loadingState.lambdaWarmedUp = true;
+          console.log('Loading: Lambda hit successfully!');
+        } else {
+          console.error(
+            'Loading error: failed to hit the lambda. Status: ',
+            response.status
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(
+          'Loading error: failed to hit the lambda. Error: ',
+          error
+        );
+        throw error;
+      });
+  }
+
+  public update(): void {
+    if (this.loadingState.lambdaWarmedUp) {
       this.scene.start('MenuScene');
-    });
+    }
   }
 }

@@ -75,9 +75,10 @@ export class EmpiresSystem {
           empireSettings.minStartSize,
           empireSettings.maxStartSize
         ),
-        playerReputation: 50,
+        playerReputation: 5,
         personality: this.getRandomPersonality(),
         color: empireColours[i],
+        messageHistory: [],
       };
 
       gameState.empires.push(empire);
@@ -143,17 +144,16 @@ export class EmpiresSystem {
   }
 
   public getRandomPersonality(): EmpirePersonality {
-    switch (this.randomGenerator.between(0, 3)) {
-      case 0:
-        return 'passive';
-      case 1:
-        return 'aggressive';
-      case 2:
-        return 'friendly';
-      case 3:
-        return 'selfish';
-    }
+    const personalities: EmpirePersonality[] = [
+      'megalomaniacal',
+      'erratic',
+      'passive',
+      'friendly',
+      'greedy',
+      'selfish',
+      'reclusive',
+    ];
 
-    return 'passive';
+    return personalities[this.randomGenerator.between(0, personalities.length)];
   }
 }

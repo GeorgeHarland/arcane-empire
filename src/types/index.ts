@@ -48,8 +48,15 @@ export type Empire = {
   rulerName: string;
   regionalStrength: number;
   playerReputation: number;
+  messageHistory: Message[];
   personality: EmpirePersonality;
   color: number;
+};
+
+export type Message = {
+  message: string;
+  sender: 'user' | 'empire' | 'system';
+  timestamp: number;
 };
 
 export type Mission = {
@@ -89,10 +96,13 @@ export type Wizard = {
 };
 
 export type EmpirePersonality =
-  | 'aggressive'
+  | 'megalomaniacal'
+  | 'erratic'
   | 'passive'
   | 'friendly'
-  | 'selfish';
+  | 'greedy'
+  | 'selfish'
+  | 'reclusive';
 
 export type ElementType = 'fire' | 'water' | 'earth' | 'air';
 
