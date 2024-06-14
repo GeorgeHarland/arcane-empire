@@ -37,7 +37,7 @@ export class HexagonGrid {
 
     this.scaledHexWidth =
       hexagonScalingConstants.baseHexagonSpriteWidth * this.hexScale;
-    this.scaledHexHeight = this.scaledHexWidth * 1.1547; // Magic number is the ration between hexagon width and height
+    this.scaledHexHeight = this.scaledHexWidth * 1.1547; // Magic number is the ratio between hexagon width and height
 
     this.draggableContainer = this.scene.add.container();
 
