@@ -68,6 +68,7 @@ export default class GameScene extends Phaser.Scene {
     this.hexGrid = new HexagonGrid(this, defaultGridSize);
 
     this.worldModel = new WorldModel(
+      this,
       this.hexGrid,
       defaultGridSize,
       defaultGenerationSettings

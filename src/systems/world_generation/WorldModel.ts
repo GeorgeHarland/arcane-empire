@@ -18,6 +18,8 @@ export interface GenerationSettings {
 }
 
 export class WorldModel {
+  gameScene: Phaser.Scene;
+
   gridSize: GridSize;
   generationSettings: GenerationSettings;
 
@@ -27,10 +29,12 @@ export class WorldModel {
   randomGenerator: Phaser.Math.RandomDataGenerator;
 
   public constructor(
+    gameScene: Phaser.Scene,
     hexGrid: HexagonGrid,
     gridSize: GridSize,
     generationSettings: GenerationSettings
   ) {
+    this.gameScene = gameScene;
     this.hexGrid = hexGrid;
     this.gridSize = gridSize;
     this.generationSettings = generationSettings;
@@ -49,6 +53,7 @@ export class WorldModel {
       for (let y = 0; y < this.gridSize.height; y++) {
         this.tiles[x][y] = new Tile(
           this,
+          this.gameScene,
           new Phaser.Math.Vector2(x, y),
           TerrainDatas.Ocean
         );
@@ -71,14 +76,17 @@ export class WorldModel {
         ) {
           this.tiles[x][y] = new Tile(
             this,
+            this.gameScene,
             new Phaser.Math.Vector2(x, y),
             TerrainDatas.Ocean
           );
         } else {
           let randomTerrainData: TerrainData =
             TerrainDatas[TerrainTypes[this.randomGenerator.between(0, 3)]];
+
           this.tiles[x][y] = new Tile(
             this,
+            this.gameScene,
             new Phaser.Math.Vector2(x, y),
             randomTerrainData
           );

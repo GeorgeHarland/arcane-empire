@@ -17,6 +17,7 @@ export class HexagonGrid {
   scaledHexWidth: number = 1;
   scaledHexHeight: number = 1;
 
+  pointerDown: boolean = false;
   isDragging: boolean = false;
   dragStartX: number = 0;
   dragStartY: number = 0;
@@ -76,35 +77,38 @@ export class HexagonGrid {
   }
 
   public onDragMap(dragX: number, dragY: number) {
-    if (this.draggableContainer) {
-      this.draggableContainer.x = Phaser.Math.Clamp(
-        dragX,
-        -this.getPixelWidth() + this.scene.sys.canvas.width,
-        0
-      );
-      this.draggableContainer.y = Phaser.Math.Clamp(
-        dragY,
-        -this.getPixelHeight() + this.scene.sys.canvas.height,
-        0
-      );
-    }
+    if (this.draggableContainer === undefined) return;
+
+    this.draggableContainer.x = Phaser.Math.Clamp(
+      dragX,
+      -this.getPixelWidth() + this.scene.sys.canvas.width,
+      0
+    );
+
+    this.draggableContainer.y = Phaser.Math.Clamp(
+      dragY,
+      -this.getPixelHeight() + this.scene.sys.canvas.height,
+      0
+    );
   }
 
   public dragMap(dx: number, dy: number) {
-    if (this.draggableContainer) {
-      const newX = this.draggableContainer.x + dx;
-      const newY = this.draggableContainer.y + dy;
-      this.draggableContainer.x = Phaser.Math.Clamp(
-        newX,
-        -this.getPixelWidth() + this.scene.sys.canvas.width,
-        0
-      );
-      this.draggableContainer.y = Phaser.Math.Clamp(
-        newY,
-        -this.getPixelHeight() + this.scene.sys.canvas.height,
-        0
-      );
-    }
+    if (this.draggableContainer === undefined) return;
+
+    const newX = this.draggableContainer.x + dx;
+    const newY = this.draggableContainer.y + dy;
+
+    this.draggableContainer.x = Phaser.Math.Clamp(
+      newX,
+      -this.getPixelWidth() + this.scene.sys.canvas.width,
+      0
+    );
+
+    this.draggableContainer.y = Phaser.Math.Clamp(
+      newY,
+      -this.getPixelHeight() + this.scene.sys.canvas.height,
+      0
+    );
   }
 
   private addTrackpadScrolling() {
@@ -177,12 +181,12 @@ export class HexagonGrid {
   ): Phaser.Math.Vector2 {
     let hexPixelPosition: Phaser.Math.Vector2 =
       this.convertGridHexToPixelHex(gridHex);
-    let hexPixelConerPosition: Phaser.Math.Vector2 = this.getPixelHexCorner(
+    let hexPixelCornerPosition: Phaser.Math.Vector2 = this.getPixelHexCorner(
       gridHex,
       slotIndex
     );
 
-    let cornerDirection = hexPixelConerPosition
+    let cornerDirection = hexPixelCornerPosition
       .subtract(hexPixelPosition)
       .scale(0.5);
     return hexPixelPosition.add(cornerDirection);

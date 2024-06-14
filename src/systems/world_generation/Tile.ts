@@ -9,6 +9,8 @@ import { WorldModel } from './WorldModel';
 export class Tile implements TileType {
   parentWorldModel: WorldModel;
 
+  gameScene: Phaser.Scene;
+
   coordinates: Phaser.Math.Vector2;
   terrainData: TerrainData;
   structureData: StructureData | undefined;
@@ -20,10 +22,13 @@ export class Tile implements TileType {
 
   constructor(
     parentWorldModel: WorldModel,
+    gameScene: Phaser.Scene,
     coordinates: Phaser.Math.Vector2,
     terrainType: TerrainData
   ) {
     this.parentWorldModel = parentWorldModel;
+    this.gameScene = gameScene;
+
     this.coordinates = coordinates;
     this.terrainData = terrainType;
     this.currentEvent = null;
@@ -41,44 +46,48 @@ export class Tile implements TileType {
   }
 
   public makeInteractive(): void {
-    if (!this.terrainImage) {
-      return;
-    }
+    if (this.terrainImage === undefined) return;
+
     this.terrainImage.setInteractive();
 
-    this.terrainImage.on('pointerup', () => {
-      if (!this.parentWorldModel.hexGrid.isDragging) {
-        eventEmitter.emit('tile-clicked', this);
-      }
-    });
-
     this.terrainImage.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      this.parentWorldModel.hexGrid.pointerDown = true;
+
       pointer.event.preventDefault();
-      this.parentWorldModel.hexGrid.isDragging = true;
       this.parentWorldModel.hexGrid.dragStartX = pointer.position.x;
       this.parentWorldModel.hexGrid.dragStartY = pointer.position.y;
     });
 
     this.terrainImage.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-      if (this.parentWorldModel.hexGrid.isDragging) {
-        const dx =
-          pointer.position.x - this.parentWorldModel.hexGrid.dragStartX;
-        const dy =
-          pointer.position.y - this.parentWorldModel.hexGrid.dragStartY;
-        this.parentWorldModel.hexGrid.dragMap(dx, dy);
-        this.parentWorldModel.hexGrid.dragStartX = pointer.position.x;
-        this.parentWorldModel.hexGrid.dragStartY = pointer.position.y;
+      if (this.parentWorldModel.hexGrid.pointerDown == false) return;
+
+      if (
+        (Math.abs(pointer.position.x - pointer.downX) > 4 ||
+          Math.abs(pointer.position.y - pointer.downY) > 4) &&
+        this.parentWorldModel.hexGrid.isDragging == false
+      ) {
+        this.parentWorldModel.hexGrid.isDragging = true;
       }
+
+      if (this.parentWorldModel.hexGrid.isDragging == false) return;
+
+      const dx = pointer.position.x - this.parentWorldModel.hexGrid.dragStartX;
+      const dy = pointer.position.y - this.parentWorldModel.hexGrid.dragStartY;
+
+      this.parentWorldModel.hexGrid.dragMap(dx, dy);
+
+      this.parentWorldModel.hexGrid.dragStartX = pointer.position.x;
+      this.parentWorldModel.hexGrid.dragStartY = pointer.position.y;
     });
 
     this.terrainImage.on('pointerup', () => {
-      this.parentWorldModel.hexGrid.isDragging = false;
-    });
+      this.parentWorldModel.hexGrid.pointerDown = false;
 
-    this.terrainImage.on('pointerup', () => {
-      if (!this.parentWorldModel.hexGrid.isDragging) {
+      if (this.parentWorldModel.hexGrid.isDragging == false) {
         eventEmitter.emit('tile-clicked', this);
       }
+
+      this.parentWorldModel.hexGrid.isDragging = false;
     });
   }
 }
