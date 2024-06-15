@@ -142,27 +142,6 @@ export default class GameScene extends Phaser.Scene {
       }
     );
 
-    // const startButton = this.add.text(
-    //   this.cameras.main.centerX,
-    //   this.cameras.main.centerY,
-    //   'End game',
-    //   {
-    //     fontSize: '24px',
-    //     color: '#FFFFFF',
-    //   })
-    //   .setOrigin(0.5);
-
-    // startButton.setInteractive({ useHandCursor: true });
-
-    // startButton.on(
-    //   'pointerup',
-    //   () => {
-    //     this.data.set('gametime', this.elapsedSeconds);
-    //     startScene(this, 'PostGameScene');
-    //   },
-    //   this
-    // );
-
     this.worldView.create();
     this.empireSystem.create();
     this.wizardManager.create();
