@@ -40,13 +40,29 @@ export const TilesTab: React.FC<{
 
       <p className="text-white pt-2">Send a wizard here: </p>
       <p className="text-cyan-300 text-lg pt-2">Air</p>
-      <WizardGroup wizardRow={wizards.air} dispatchToTile={currentTile} />
+      <WizardGroup
+        wizardRow={wizards.air}
+        dispatchToTile={currentTile}
+        keybinds={['1', '2', '3']}
+      />
       <p className="text-emerald-400 text-lg pt-2">Earth</p>
-      <WizardGroup wizardRow={wizards.earth} dispatchToTile={currentTile} />
+      <WizardGroup
+        wizardRow={wizards.earth}
+        dispatchToTile={currentTile}
+        keybinds={['q', 'w', 'e']}
+      />
       <p className="text-orange-500 text-lg pt-2">Fire</p>
-      <WizardGroup wizardRow={wizards.fire} dispatchToTile={currentTile} />
+      <WizardGroup
+        wizardRow={wizards.fire}
+        dispatchToTile={currentTile}
+        keybinds={['a', 's', 'd']}
+      />
       <p className="text-blue-400 text-lg pt-2">Water</p>
-      <WizardGroup wizardRow={wizards.water} dispatchToTile={currentTile} />
+      <WizardGroup
+        wizardRow={wizards.water}
+        dispatchToTile={currentTile}
+        keybinds={['z', 'x', 'c']}
+      />
     </div>
   );
 };
