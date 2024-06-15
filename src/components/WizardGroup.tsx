@@ -2,7 +2,7 @@ import { handleDispatchWizard } from '../events/wizardActions';
 import { Tile } from '../systems/world_generation/Tile';
 import { Wizard } from '../types';
 import { WizardProfile } from './WizardProfile';
-import { useEffect } from 'preact/hooks';
+import { useEventListener } from 'usehooks-ts';
 
 type WizardGroupProps = {
   wizardRow: Wizard[];
@@ -13,24 +13,18 @@ type WizardGroupProps = {
 export const WizardGroup: React.FC<WizardGroupProps> = (props) => {
   const wizards = props.wizardRow;
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!props.keybinds) return;
-      const keyIndex = props.keybinds.indexOf(event.key);
-      if (keyIndex !== -1) {
-        const wizard = wizards[keyIndex];
-        if (wizard && props.dispatchToTile) {
-          handleDispatchWizard(wizard, props.dispatchToTile);
-        }
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (!props.keybinds) return;
+    const keyIndex = props.keybinds.indexOf(event.key);
+    if (keyIndex !== -1) {
+      const wizard = wizards[keyIndex];
+      if (wizard && props.dispatchToTile) {
+        handleDispatchWizard(wizard, props.dispatchToTile);
       }
-    };
+    }
+  };
 
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [props.keybinds, wizards]);
+  useEventListener('keydown', handleKeyDown);
 
   return (
     <div className="flex flex-wrap items-center justify-start mb-4">
