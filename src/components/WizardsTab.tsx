@@ -1,5 +1,5 @@
-import { Wizard, WizardCollection } from '../types';
-import { WizardProfile } from './WizardProfile';
+import { WizardCollection } from '../types';
+import { WizardGroup } from './WizardGroup';
 
 export const WizardsTab: React.FC<{ wizards: WizardCollection }> = (props) => {
   const { wizards } = props;
@@ -27,34 +27,6 @@ export const WizardsTab: React.FC<{ wizards: WizardCollection }> = (props) => {
         <p className="text-sm">Water wizards earn reputation faster.</p>
         <WizardGroup wizardRow={wizards.water} />
       </div>
-    </div>
-  );
-};
-
-export const WizardGroup: React.FC<{ wizardRow: Wizard[] }> = (props) => {
-  const idleWizards = props.wizardRow.filter(
-    (wizard) => wizard.status === 'idle'
-  );
-  const awayWizards = props.wizardRow.filter(
-    (wizard) => wizard.status === 'away'
-  );
-
-  return (
-    <div className="flex flex-wrap items-center justify-start mb-4">
-      {idleWizards.map((wizard) => (
-        <WizardProfile
-          key={wizard.name}
-          wizard={wizard}
-          clickedCallback={() => {}}
-        />
-      ))}
-      {awayWizards.map((wizard) => (
-        <WizardProfile
-          key={wizard.name}
-          wizard={wizard}
-          clickedCallback={() => {}}
-        />
-      ))}
     </div>
   );
 };
