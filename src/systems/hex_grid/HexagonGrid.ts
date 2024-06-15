@@ -240,7 +240,7 @@ export class HexagonGrid {
 
   public getContainer(): Phaser.GameObjects.Container {
     if (this.draggableContainer === undefined)
-      throw 'draggableContainer is undefined';
+      throw new Error('draggableContainer is undefined');
 
     return this.draggableContainer;
   }

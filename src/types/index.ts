@@ -92,6 +92,7 @@ export type Wizard = {
   name: string;
   initials: string;
   level: number;
+  maxHealth: number;
   status: 'idle' | 'moving' | 'away';
 };
 
