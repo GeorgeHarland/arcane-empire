@@ -15,9 +15,8 @@ The game is built with Phaser.js in a Preact wrapper. There is a node backend to
 1. Make sure node and git are installed on your machine
 2. Clone the repository using `git clone <git-project-url>`
 3. Install the necessary dependencies with `npm install`
-4. Run the server with `npm run server`
-5. In a seperate terminal, run the game with `npm run dev`
-6. Navigate to localhost:5173 to play the game
+4. Run the game with `npm run dev`
+5. Navigate to localhost:5173 to play the game
 
 ## Contributing
 

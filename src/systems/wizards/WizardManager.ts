@@ -272,11 +272,29 @@ export class WizardManager {
   }
 
   public sendWizardToTile(targetWizard: WizardEntity, targetTile: Tile): void {
-    if (!this.staticWizards.has(targetWizard)) return;
+    if (
+      this.staticWizards.has(targetWizard) == false &&
+      this.movingWizards.has(targetWizard) == false
+    )
+      return;
 
-    let currentTile = this.staticWizards.get(targetWizard);
+    let currentTile =
+      this.staticWizards.get(targetWizard) ||
+      this.movingWizards.get(targetWizard);
 
     if (currentTile === undefined) return;
+
+    if (this.movingWizards.has(targetWizard)) {
+      this.staticWizards.set(
+        targetWizard,
+        this.worldModel.getTile(
+          this.movingWizards.get(targetWizard)!.wizardPosition()
+        )
+      );
+      const wiz = this.movingWizards.get(targetWizard);
+      wiz ? this.movingWizards.get(targetWizard)?.complete : null;
+      this.movingWizards.get(targetWizard)?.completeCallback();
+    }
 
     this.movingWizards.set(
       targetWizard,
@@ -284,7 +302,9 @@ export class WizardManager {
         this.worldModel,
         this.hexGrid,
         targetWizard,
-        currentTile,
+        this.staticWizards.has(targetWizard)
+          ? (currentTile as Tile)
+          : 'fetchTile',
         targetTile,
         20 * this.hexGrid.hexScale,
         () => {

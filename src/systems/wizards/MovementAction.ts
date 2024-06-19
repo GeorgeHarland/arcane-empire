@@ -31,7 +31,7 @@ export class MovementAction {
     worldModel: WorldModel,
     hexGrid: HexagonGrid,
     wizard: WizardEntity,
-    startTile: Tile,
+    startTile: Tile | 'fetchTile',
     endTile: Tile,
     speed: number,
     completeCallback: () => void
@@ -41,11 +41,14 @@ export class MovementAction {
 
     this.wizard = wizard;
 
-    this.startTile = startTile;
+    this.startTile =
+      startTile === 'fetchTile'
+        ? this.worldModel.getTile(this.wizardPosition())
+        : (startTile as Tile);
     this.endTile = endTile;
 
     this.startPixelPosition = this.hexGrid.convertGridHexToPixelHex(
-      startTile.coordinates
+      this.startTile.coordinates
     );
     this.endPixelPosition = this.hexGrid.convertGridHexToPixelHex(
       endTile.coordinates
@@ -53,7 +56,7 @@ export class MovementAction {
 
     this.speed = speed;
 
-    this.path = this.pathfind(startTile, endTile);
+    this.path = this.pathfind(this.startTile, endTile);
     this.distance = this.startPixelPosition.distance(this.endPixelPosition);
     this.time = this.distance / this.speed;
 
@@ -118,12 +121,12 @@ export class MovementAction {
     wizardContainer.depth = wizardContainer.y;
   }
 
-  private wizardPosition(): Phaser.Math.Vector2 {
-    const journeyProgress = (this.progress / this.time) * this.path.length;
-    const legStartIndex = Math.floor(journeyProgress);
-    const legStart = this.path[legStartIndex];
-    const legEnd = this.path[legStartIndex + 1];
-    const legProgress = journeyProgress - legStartIndex;
+  public wizardPosition(): Phaser.Math.Vector2 {
+    let journeyProgress = (this.progress / this.time) * this.path.length;
+    let legStartIndex = Math.floor(journeyProgress);
+    let legStart = this.path[legStartIndex];
+    let legEnd = this.path[legStartIndex + 1];
+    let legProgress = journeyProgress - legStartIndex;
     if (legStartIndex + 1 >= this.path.length) {
       return legStart; // end doesn't exist after arrival, start is final position
     } else {
